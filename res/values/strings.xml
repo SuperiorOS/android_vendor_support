@@ -37,4 +37,13 @@
     <string name="active_edge_app_select_title">Select app</string>
     <string name="active_edge_activity_select_title">Select activity</string>
 
+    <!-- Color Blend -->
+    <string name="color_blend_ok">@android:string/ok</string>
+    <string name="color_blend_cancel">@android:string/cancel</string>
+    <string name="color_blend_reset">Reset</string>
+    <string name="color_blend_preview">Preview: %1$d%%</string>
+    <string name="color_preview_start">Start</string>
+    <string name="color_preview_end">End</string>
+    <string name="color_preview_between">Between</string>
+
 </resources>
