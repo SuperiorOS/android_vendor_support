@@ -15,6 +15,15 @@
 -->
 <resources>
 
+    <!-- Base attributes available to CustomSeekBarPreference. -->
+    <declare-styleable name="CustomSeekBarPreference">
+        <attr name="interval" format="integer" />
+        <attr name="showSign" format="boolean" />
+        <attr name="units" format="string|reference" />
+        <attr name="continuousUpdates" format="boolean" />
+        <attr name="defaultText" format="string|reference" />
+    </declare-styleable>
+
     <!-- Value to pass to callback when restore button is pressed -->
     <declare-styleable name="ColorPreference">
         <attr name="defaultColorValue" format="integer" />
