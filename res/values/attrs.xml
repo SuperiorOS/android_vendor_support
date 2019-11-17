@@ -23,6 +23,11 @@
         <attr name="continuousUpdates" format="boolean" />
     </declare-styleable>
 
+    <!-- Value to pass to callback when restore button is pressed -->
+    <declare-styleable name="ColorPickerPreference">
+        <attr name="alphaSlider" format="boolean" />
+    </declare-styleable>
+
     <!-- Color Blend -->
     <declare-styleable name="ColorBlendPreference">
         <!-- Preference keys -->
