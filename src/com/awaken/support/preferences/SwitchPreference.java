@@ -47,10 +47,12 @@ public class SwitchPreference extends androidx.preference.SwitchPreference {
         this(context, attrs, TypedArrayUtils.getAttr(context,
                 androidx.preference.R.attr.switchPreferenceStyle,
                 android.R.attr.switchPreferenceStyle));
+        setLayoutResource(R.layout.preference_material_settings);
     }
 
     public SwitchPreference(Context context) {
         this(context, null);
+        setLayoutResource(R.layout.preference_material_settings);
     }
 
     @Override
