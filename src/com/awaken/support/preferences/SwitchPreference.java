@@ -17,6 +17,8 @@
 package com.awaken.support.preferences;
 
 import android.content.Context;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -25,9 +27,13 @@ import androidx.preference.R;
 
 public class SwitchPreference extends androidx.preference.SwitchPreference {
 
+    private final Vibrator mVibrator;
+
     public SwitchPreference(Context context, AttributeSet attrs, int defStyleAttr,
             int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+
+        mVibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
     }
 
     public SwitchPreference(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -47,5 +53,7 @@ public class SwitchPreference extends androidx.preference.SwitchPreference {
     @Override
     protected void performClick(View view) {
         super.performClick(view);
+
+        mVibrator.vibrate(VibrationEffect.get(VibrationEffect.EFFECT_CLICK));
     }
 }
