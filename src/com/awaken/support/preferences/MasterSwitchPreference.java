@@ -40,12 +40,14 @@ public class MasterSwitchPreference extends TwoTargetPreference {
     private boolean mChecked;
     private boolean mEnableSwitch = true;
 
+    private final Context mContext;
     private final Vibrator mVibrator;
 
     public MasterSwitchPreference(Context context, AttributeSet attrs,
                                   int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
 
+        mContext = context;
         mVibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
     }
 
@@ -85,7 +87,7 @@ public class MasterSwitchPreference extends TwoTargetPreference {
                     } else {
                         persistBoolean(mChecked);
                     }
-                    mVibrator.vibrate(VibrationEffect.get(VibrationEffect.EFFECT_CLICK));
+                    doHapticFeedback();
                 }
             });
         }
@@ -153,5 +155,14 @@ public class MasterSwitchPreference extends TwoTargetPreference {
         // Using getString instead of getInt so we can simply check for null
         // instead of catching an exception. (All values are stored as strings.)
         return Settings.System.getString(getContext().getContentResolver(), getKey()) != null;
+    }
+
+    private void doHapticFeedback() {
+        final boolean hapticEnabled = Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.HAPTIC_FEEDBACK_ENABLED, 1) != 0;
+
+        if (hapticEnabled) {
+            mVibrator.vibrate(VibrationEffect.get(VibrationEffect.EFFECT_CLICK));
+        }
     }
 }
