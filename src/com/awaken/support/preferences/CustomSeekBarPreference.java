@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2016-2019 crDroid Android Project
+ * Copyright (C) 2020 Havoc-OS
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +20,9 @@ package com.awaken.support.preferences;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
-import androidx.preference.*;
-import androidx.core.content.res.TypedArrayUtils;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
+import android.provider.Settings;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -30,6 +32,9 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.core.content.res.TypedArrayUtils;
+import androidx.preference.*;
 
 import com.awaken.support.R;
 
@@ -59,6 +64,9 @@ public class CustomSeekBarPreference extends Preference implements SeekBar.OnSee
 
     protected boolean mTrackingTouch = false;
     protected int mTrackingValue;
+
+    private final Context mContext;
+    private final Vibrator mVibrator;
 
     public CustomSeekBarPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
@@ -96,6 +104,9 @@ public class CustomSeekBarPreference extends Preference implements SeekBar.OnSee
 
         mSeekBar = new SeekBar(context, attrs);
         setLayoutResource(R.layout.preference_custom_seekbar);
+
+        mContext = context;
+        mVibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
     }
 
     public CustomSeekBarPreference(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -211,6 +222,7 @@ public class CustomSeekBarPreference extends Preference implements SeekBar.OnSee
         if (mTrackingTouch && !mContinuousUpdates) {
             mTrackingValue = newValue;
             updateValueViews();
+            doHapticFeedback(VibrationEffect.EFFECT_TEXTURE_TICK);
         } else if (mValue != newValue) {
             // change rejected, revert to the previous value
             if (!callChangeListener(newValue)) {
@@ -251,6 +263,7 @@ public class CustomSeekBarPreference extends Preference implements SeekBar.OnSee
         } else if (id == R.id.plus) {
             setValue(mValue + mInterval, true);
         }
+        doHapticFeedback(VibrationEffect.EFFECT_CLICK);
     }
 
     @Override
@@ -340,5 +353,14 @@ public class CustomSeekBarPreference extends Preference implements SeekBar.OnSee
     public void refresh(int newValue) {
         // this will ...
         setValue(newValue, mSeekBar != null);
+    }
+
+    private void doHapticFeedback(int effect) {
+        final boolean hapticEnabled = Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.HAPTIC_FEEDBACK_ENABLED, 1) != 0;
+
+        if (hapticEnabled) {
+            mVibrator.vibrate(VibrationEffect.get(effect));
+        }
     }
 }
