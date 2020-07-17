@@ -2,6 +2,7 @@
  * Copyright (C) 2011 Sergey Margaritov
  * Copyright (C) 2013 Slimroms
  * Copyright (C) 2015 The TeamEos Project
+ * Copyright (C) 2020 Havoc-OS
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +29,9 @@ import android.graphics.drawable.shapes.OvalShape;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import androidx.preference.*;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
+import android.provider.Settings;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -36,6 +39,8 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import androidx.preference.*;
 
 import com.awaken.support.R;
 
@@ -65,6 +70,9 @@ public class ColorPickerPreference extends Preference implements
     private boolean mDividerBelow;
     private EditText mEditText;
 
+    private final Context mContext;
+    private final Vibrator mVibrator;
+
     //private boolean mIsCrappyLedDevice;
 
     public ColorPickerPreference(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -84,6 +92,9 @@ public class ColorPickerPreference extends Preference implements
         super(context, attrs, defStyleAttr, defStyleRes);
         setLayoutResource(R.layout.preference_material_settings);
         init(context, attrs);
+
+        mContext = context;
+        mVibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
     }
 
     @Override
@@ -179,6 +190,7 @@ public class ColorPickerPreference extends Preference implements
             @Override
             public void onClick(View v) {
                 onColorChanged(mDefaultValue);
+                doHapticFeedback();
             }
         });
         // sorcery for a linear layout ugh
@@ -420,5 +432,14 @@ public class ColorPickerPreference extends Preference implements
         shape.setIntrinsicWidth(size);
         shape.getPaint().setColor(color);
         return shape;
+    }
+
+    private void doHapticFeedback() {
+        final boolean hapticEnabled = Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.HAPTIC_FEEDBACK_ENABLED, 1) != 0;
+
+        if (hapticEnabled) {
+            mVibrator.vibrate(VibrationEffect.get(VibrationEffect.EFFECT_CLICK));
+        }
     }
 }

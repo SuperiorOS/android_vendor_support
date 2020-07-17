@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2010 Daniel Nilsson
  * Copyright (C) 2013 Slimroms
+ * Copyright (C) 2020 Havoc-OS
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +22,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -29,6 +32,8 @@ import android.widget.EditText;
 import android.view.KeyEvent;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+
+import androidx.annotation.NonNull;
 
 import com.awaken.support.R;
 
@@ -41,6 +46,9 @@ public class ColorPickerDialog extends AlertDialog implements ColorPickerView.On
 
     private OnColorChangedListener mListener;
 
+    private final Context mContext;
+    private final Vibrator mVibrator;
+
     public interface OnColorChangedListener {
         void onColorChanged(int color);
     }
@@ -49,6 +57,9 @@ public class ColorPickerDialog extends AlertDialog implements ColorPickerView.On
         super(context);
 
         init(initialColor);
+
+        mContext = context;
+        mVibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
     }
 
     private void init(int color) {
@@ -145,6 +156,7 @@ public class ColorPickerDialog extends AlertDialog implements ColorPickerView.On
                 mListener.onColorChanged(mNewColor.getColor());
             }
         }
+        doHapticFeedback();
         dismiss();
     }
 
@@ -163,5 +175,14 @@ public class ColorPickerDialog extends AlertDialog implements ColorPickerView.On
         super.onRestoreInstanceState(savedInstanceState);
         mOldColor.setColor(savedInstanceState.getInt("old_color"));
         mColorPicker.setColor(savedInstanceState.getInt("new_color"), true);
+    }
+
+    private void doHapticFeedback() {
+        final boolean hapticEnabled = Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.HAPTIC_FEEDBACK_ENABLED, 1) != 0;
+
+        if (hapticEnabled) {
+            mVibrator.vibrate(VibrationEffect.get(VibrationEffect.EFFECT_CLICK));
+        }
     }
 }
