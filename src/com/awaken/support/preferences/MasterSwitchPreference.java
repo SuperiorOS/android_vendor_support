@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2017 The Android Open Source Project
+ * Copyright (C) 2020 Havoc-OS
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +20,6 @@ package com.awaken.support.preferences;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.VibrationEffect;
-import android.os.Vibrator;
 import android.provider.Settings;
 import android.util.AttributeSet;
 import android.view.View;
@@ -29,6 +29,7 @@ import androidx.core.content.res.TypedArrayUtils;
 import androidx.preference.PreferenceViewHolder;
 
 import com.awaken.support.R;
+import com.awaken.support.util.VibrationUtils;
 
 /**
  * A custom preference that provides inline switch toggle. It has a mandatory field for title, and
@@ -41,14 +42,12 @@ public class MasterSwitchPreference extends TwoTargetPreference {
     private boolean mEnableSwitch = true;
 
     private final Context mContext;
-    private final Vibrator mVibrator;
 
     public MasterSwitchPreference(Context context, AttributeSet attrs,
                                   int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
 
         mContext = context;
-        mVibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
     }
 
     public MasterSwitchPreference(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -87,7 +86,7 @@ public class MasterSwitchPreference extends TwoTargetPreference {
                     } else {
                         persistBoolean(mChecked);
                     }
-                    doHapticFeedback();
+                    VibrationUtils.doHapticFeedback(mContext, VibrationEffect.EFFECT_CLICK);
                 }
             });
         }
@@ -155,14 +154,5 @@ public class MasterSwitchPreference extends TwoTargetPreference {
         // Using getString instead of getInt so we can simply check for null
         // instead of catching an exception. (All values are stored as strings.)
         return Settings.System.getString(getContext().getContentResolver(), getKey()) != null;
-    }
-
-    private void doHapticFeedback() {
-        final boolean hapticEnabled = Settings.System.getInt(mContext.getContentResolver(),
-                Settings.System.HAPTIC_FEEDBACK_ENABLED, 1) != 0;
-
-        if (hapticEnabled) {
-            mVibrator.vibrate(VibrationEffect.get(VibrationEffect.EFFECT_CLICK));
-        }
     }
 }
