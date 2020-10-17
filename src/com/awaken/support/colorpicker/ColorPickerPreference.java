@@ -119,7 +119,7 @@ public class ColorPickerPreference extends Preference implements
         if (attrs != null) {
             mAlphaSliderEnabled = attrs.getAttributeBooleanValue(null, "alphaSlider", false);
             mDefaultValue = attrs.getAttributeIntValue(ANDROIDNS, "defaultValue", Color.BLACK);
-            mShowReset = attrs.getAttributeBooleanValue(SETTINGS_NS, "showReset", true);
+            mShowReset = attrs.getAttributeBooleanValue(SETTINGS_NS, "showReset", false);
             mShowPreview = attrs.getAttributeBooleanValue(SETTINGS_NS, "showPreview", true);
             mDividerAbove = attrs.getAttributeBooleanValue(SETTINGS_NS, "dividerAbove", false);
             mDividerBelow = attrs.getAttributeBooleanValue(SETTINGS_NS, "dividerBelow", false);
