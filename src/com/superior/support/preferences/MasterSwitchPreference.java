@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.aospextended.support.preference;
+package com.superior.support.preferences;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -23,7 +23,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Switch;
 
-import org.aospextended.support.R;
+import com.superior.support.R;
 
 /**
  * A custom preference that provides inline switch toggle. It has a mandatory field for title, and

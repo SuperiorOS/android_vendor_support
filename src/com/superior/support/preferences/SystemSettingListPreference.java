@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 AICP
+ * Copyright (C) 2017-2018 AICP
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,28 +14,35 @@
  * limitations under the License.
  */
 
-package org.aospextended.support.preference;
+package com.superior.support.preferences;
 
 import android.content.Context;
 import android.util.AttributeSet;
 
-import org.aospextended.support.preference.SystemSettingsStore;
+public class SystemSettingListPreference extends ListPreference {
 
-public class SystemSettingMasterSwitchPreference extends MasterSwitchPreference {
-
-    public SystemSettingMasterSwitchPreference(Context context, AttributeSet attrs, int defStyle) {
+    public SystemSettingListPreference(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         setPreferenceDataStore(new SystemSettingsStore(context.getContentResolver()));
     }
 
-    public SystemSettingMasterSwitchPreference(Context context, AttributeSet attrs) {
+    public SystemSettingListPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         setPreferenceDataStore(new SystemSettingsStore(context.getContentResolver()));
     }
 
-    public SystemSettingMasterSwitchPreference(Context context) {
+    public SystemSettingListPreference(Context context) {
         super(context);
         setPreferenceDataStore(new SystemSettingsStore(context.getContentResolver()));
+    }
+
+    @Override
+    protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
+        // This is what default ListPreference implementation is doing without respecting
+        // real default value:
+        //setValue(restoreValue ? getPersistedString(mValue) : (String) defaultValue);
+        // Instead, we better do
+        setValue(restoreValue ? getPersistedString((String) defaultValue) : (String) defaultValue);
     }
 
 }

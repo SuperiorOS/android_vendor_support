@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.aospextended.support.preference;
+package com.superior.support.preferences;
 
 import android.content.Context;
 import android.text.TextUtils;

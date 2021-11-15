@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.aospextended.support.preference;
+package com.superior.support.preferences;
 
 import android.content.Context;
 import android.provider.Settings;
@@ -22,16 +22,16 @@ import android.util.AttributeSet;
 
 import androidx.preference.CheckBoxPreference;
 
-public class GlobalCheckBoxPreference extends CheckBoxPreference {
-    public GlobalCheckBoxPreference(Context context, AttributeSet attrs, int defStyle) {
+public class SystemCheckBoxPreference extends CheckBoxPreference {
+    public SystemCheckBoxPreference(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
-    public GlobalCheckBoxPreference(Context context, AttributeSet attrs) {
+    public SystemCheckBoxPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public GlobalCheckBoxPreference(Context context) {
+    public SystemCheckBoxPreference(Context context) {
         super(context, null);
     }
 
@@ -43,7 +43,7 @@ public class GlobalCheckBoxPreference extends CheckBoxPreference {
                 return true;
             }
 
-            Settings.Global.putInt(getContext().getContentResolver(), getKey(), value ? 1 : 0);
+            Settings.System.putInt(getContext().getContentResolver(), getKey(), value ? 1 : 0);
             return true;
         }
         return false;
@@ -55,7 +55,7 @@ public class GlobalCheckBoxPreference extends CheckBoxPreference {
             return defaultReturnValue;
         }
 
-        return Settings.Global.getInt(getContext().getContentResolver(),
+        return Settings.System.getInt(getContext().getContentResolver(),
                 getKey(), defaultReturnValue ? 1 : 0) != 0;
     }
 
@@ -64,6 +64,5 @@ public class GlobalCheckBoxPreference extends CheckBoxPreference {
         setChecked(Settings.System.getString(getContext().getContentResolver(), getKey()) != null ? getPersistedBoolean(isChecked())
                 : (Boolean) defaultValue);
     }
-
 }
 

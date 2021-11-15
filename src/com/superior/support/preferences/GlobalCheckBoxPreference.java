@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.aospextended.support.preference;
+package com.superior.support.preferences;
 
 import android.content.Context;
 import android.provider.Settings;
@@ -22,16 +22,16 @@ import android.util.AttributeSet;
 
 import androidx.preference.CheckBoxPreference;
 
-public class SecureCheckBoxPreference extends CheckBoxPreference {
-    public SecureCheckBoxPreference(Context context, AttributeSet attrs, int defStyle) {
+public class GlobalCheckBoxPreference extends CheckBoxPreference {
+    public GlobalCheckBoxPreference(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
-    public SecureCheckBoxPreference(Context context, AttributeSet attrs) {
+    public GlobalCheckBoxPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public SecureCheckBoxPreference(Context context) {
+    public GlobalCheckBoxPreference(Context context) {
         super(context, null);
     }
 
@@ -43,7 +43,7 @@ public class SecureCheckBoxPreference extends CheckBoxPreference {
                 return true;
             }
 
-            Settings.Secure.putInt(getContext().getContentResolver(), getKey(), value ? 1 : 0);
+            Settings.Global.putInt(getContext().getContentResolver(), getKey(), value ? 1 : 0);
             return true;
         }
         return false;
@@ -55,7 +55,7 @@ public class SecureCheckBoxPreference extends CheckBoxPreference {
             return defaultReturnValue;
         }
 
-        return Settings.Secure.getInt(getContext().getContentResolver(),
+        return Settings.Global.getInt(getContext().getContentResolver(),
                 getKey(), defaultReturnValue ? 1 : 0) != 0;
     }
 
@@ -64,5 +64,6 @@ public class SecureCheckBoxPreference extends CheckBoxPreference {
         setChecked(Settings.System.getString(getContext().getContentResolver(), getKey()) != null ? getPersistedBoolean(isChecked())
                 : (Boolean) defaultValue);
     }
+
 }
 
