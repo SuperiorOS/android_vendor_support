@@ -31,4 +31,9 @@
     <string name="seek_value_edit_label">Establecer valor</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancelar</string>
+
+    <string name="custom_seekbar_value">Valor: <xliff:g id="v">%s</xliff:g></string>
+    <string name="custom_seekbar_default_value">Predeterminado</string>
+    <string name="custom_seekbar_default_value_to_set">Valor predeterminado: <xliff:g id="v">%s</xliff:g>\nPulsación larga para establecer</string>
+    <string name="custom_seekbar_default_value_is_set">Valor predeterminado establecido</string>
 </resources>
