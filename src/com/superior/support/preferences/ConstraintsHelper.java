@@ -23,8 +23,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.TypedArray;
-import android.os.IBinder;
-import android.os.ServiceManager;
 import android.os.SystemProperties;
 import android.os.UserHandle;
 import android.telephony.TelephonyManager;
@@ -44,7 +42,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import com.android.internal.custom.hardware.LineageHardwareManager;
+// import com.android.internal.custom.hardware.LineageHardwareManager;
 import com.superior.support.R;
 
 
@@ -149,7 +147,7 @@ public class ConstraintsHelper {
 
             // Check if the current user is an owner
             boolean rOwner = a.getBoolean(R.styleable.lineage_SelfRemovingPreference_requiresOwner, false);
-            if (rOwner && UserHandle.myUserId() != UserHandle.USER_OWNER) {
+            if (rOwner && UserHandle.myUserId() != UserHandle.USER_SYSTEM) {
                 return false;
             }
 
@@ -187,8 +185,8 @@ public class ConstraintsHelper {
                     rFeature = rFeature.substring(1);
                 }
                 boolean available = rFeature.startsWith("lineagehardware:") ?
-                        LineageHardwareManager.getInstance(mContext).isSupported(
-                                rFeature.substring("lineagehardware:".length())) :
+                        false/*LineageHardwareManager.getInstance(mContext).isSupported(
+                                rFeature.substring("lineagehardware:".length()))*/ :
                         hasSystemFeature(mContext, rFeature);
                 if (available == negated) {
                     return false;
@@ -229,21 +227,6 @@ public class ConstraintsHelper {
                     if (tv.data == 0 || (mask >= 0 && (tv.data & mask) == 0)) {
                         return false;
                     }
-                }
-            }
-
-            // Check a system service
-            String rService = a.getString(
-                    R.styleable.lineage_SelfRemovingPreference_requiresService);
-            if (rService != null) {
-                boolean negated = isNegated(rService);
-                if (negated) {
-                    rService = rService.substring(1);
-                }
-                IBinder value = ServiceManager.getService(rService);
-                boolean available = value != null;
-                if (available == negated) {
-                    return false;
                 }
             }
         } finally {
